@@ -1,18 +1,48 @@
 [
-{"question":"This is a Sample Question 1?",
+{"question":"1. If a negative of an given image is created by subtracting all the pixel values from the maximum grey value, then the shape of the histogram of the new image will be",
 "answers":{
-            "a":"answer1",
-            "b":"answer2",
-            "c":"answer3",
-            "d":"answer4"
+            "a":"Different from the original",
+            "b":"Same as original",
+            "c":"Negated as well",
+            "d":"Shifted towards high gray levels"
           },
 "correctAnswer":"a"},
-{"question":"This is a Sample Question 2?",
+
+{"question":"2. After rotating the input image by 180�, histogram of the new image will be",
 "answers":{
-            "a":"answer1",
-            "b":"answer2",
-            "c":"answer3",
-            "d":"answer4"
+            "a":"Rotated by 180�",
+            "b":"Same as original",
+            "c":"Shifted toward high gray levels",
+            "d":"Shifted toward low gray levels"
           },
-"correctAnswer":"c"} 
+"correctAnswer":"c"},
+
+{"question":"3. If the histogram of any image is uniformly distributed on all gray levels, image will be of",
+"answers":{
+            "a":"Good quality",
+            "b":"Bad quality",
+            "c":"Low contrast",
+            "d":"Cannot say"
+          },
+"correctAnswer":"a"},
+
+{"question":"4. If a constant value is added to every pixel in an image then its histogram will",
+"answers":{
+            "a":"Shift to the right",
+            "b":"Shift to the left",
+            "c":"Remain unchanged",
+            "d":"None of the above"
+          },
+"correctAnswer":"c"},
+
+{"question":"5.Maximum number of bins in the histogram of an image with bit depth 10 is",
+"answers":{
+            "a":"1024",
+            "b":"128",
+            "c":"1000",
+            "d":"256"
+          },
+"correctAnswer":"a"}
+
+ 
 ]
