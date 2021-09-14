@@ -8,9 +8,9 @@
           },
 "correctAnswer":"a"},
 
-{"question":"2. After rotating the input image by 180�, histogram of the new image will be",
+{"question":"2. After rotating the input image by 180°, histogram of the new image will be",
 "answers":{
-            "a":"Rotated by 180�",
+            "a":"Rotated by 180°",
             "b":"Same as original",
             "c":"Shifted toward high gray levels",
             "d":"Shifted toward low gray levels"
