@@ -24,25 +24,6 @@
             "c":"Low contrast",
             "d":"Cannot say"
           },
-"correctAnswer":"a"},
-
-{"question":"4. If a constant value is added to every pixel in an image then its histogram will",
-"answers":{
-            "a":"Shift to the right",
-            "b":"Shift to the left",
-            "c":"Remain unchanged",
-            "d":"None of the above"
-          },
-"correctAnswer":"c"},
-
-{"question":"5.Maximum number of bins in the histogram of an image with bit depth 10 is",
-"answers":{
-            "a":"1024",
-            "b":"128",
-            "c":"1000",
-            "d":"256"
-          },
 "correctAnswer":"a"}
-
  
 ]
