@@ -21,8 +21,8 @@ This property of a histogram is used in content-based retrieval applications to 
 
 These information in turn are useful for processing a given image to enhance or analyse the content of the image which is described in detail next.
 
-Histogram Processing:
+**Histogram Processing:**
 
 The contrast of an image can be modified by manipulating its histogram. A popular method is via Histogram equalization. Here, the given histogram is manipulated such that the distribution of pixel values is evenly spread over the entire range 0 to K-1.
 
-Histogram equalization can be done at a global or local level. In the global level the histogram of the entire image is processed whereas at the local level, the given image is subdivided and the histograms of the subdivisions (or subimages) are manipulated individually. When histogram equalization is applied locally, the procedure is called Adaptive Histogram Equalization.
+Histogram equalization can be done at a global or local level. In the global level the histogram of the entire image is processed whereas at the local level, the given image is subdivided and the histograms of the subdivisions (or subimages) are manipulated individually. When histogram equalization is applied locally, the procedure is called *Adaptive Histogram Equalization*.
