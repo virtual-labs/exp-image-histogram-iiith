@@ -520,17 +520,17 @@ $("#sliderContent").replaceWith('      <div id="sliderContent" class="ui-corner-
 
     <!-- This is 'TopBar_jpg' -->
     <div id="Layer-3" class="TopBar_jpg"  >
-      <img src="images/Layer-3.jpg" width="894" height="96" alt="TopBar" />
+      <!-- <img src="images/Layer-3.jpg" width="894" height="96" alt="TopBar" /> -->
       <!-- This is 'IIIT' -->
-      <div id="Layer-6" class="IIIT"  >
+      <!-- <div id="Layer-6" class="IIIT"  >
         <img src="images/iiit.png" width="100" height="70" alt="IIIT" class="pngimg" />
-	</div>
+	</div> -->
 	
 			<div id="topMenu">
-			<h1 style="text-align: center;">Virtual Lab for IMAGE PROCESSING</h1>
-<div class="home">
+			<!-- <h1 style="text-align: center;">Virtual Lab for IMAGE PROCESSING</h1> -->
+<!-- <div class="home">
 <a onclick="confirmTo('index.html')">home</a>
-</div>
+</div> -->
 
 			<div class="menu">
 <!-- <ul> -->
