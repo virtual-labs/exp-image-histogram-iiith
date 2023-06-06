@@ -1,0 +1,29 @@
+[
+{"question":"1. If a negative of an given image is created by subtracting all the pixel values from the maximum grey value, then the shape of the histogram of the new image will be",
+"answers":{
+            "a":"Different from the original",
+            "b":"Same as original",
+            "c":"Negated as well",
+            "d":"Shifted towards high gray levels"
+          },
+"correctAnswer":"a"},
+
+{"question":"2. After rotating the input image by 180°, histogram of the new image will be",
+"answers":{
+            "a":"Rotated by 180°",
+            "b":"Same as original",
+            "c":"Shifted toward high gray levels",
+            "d":"Shifted toward low gray levels"
+          },
+"correctAnswer":"c"},
+
+{"question":"3. If the histogram of any image is uniformly distributed on all gray levels, image will be of",
+"answers":{
+            "a":"Good quality",
+            "b":"Bad quality",
+            "c":"Low contrast",
+            "d":"Cannot say"
+          },
+"correctAnswer":"a"}
+ 
+]
