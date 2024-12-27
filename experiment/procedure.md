@@ -22,10 +22,6 @@ a. Select region of the image to load it in the input image panel
 
 2. Select one option from Global histogram equalization, Local histogram equalization and Filtering on histogram
 
-3. Select the size of filter from Filtering on histogram option
-
 **Interesting Observations**
 
 1. Try Global histogram equalization and local histogram equalization on same image and observe the result.
-
-2. Select different size of filters and observe the change in histograms. 
