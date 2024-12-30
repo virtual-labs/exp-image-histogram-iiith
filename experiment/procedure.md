@@ -6,21 +6,21 @@ Steps to run the experiments
 
 1. Select image from the mosaic using 'select image' option
 
-a) Select region of the image to load it in the input image panel
+2. Select region of the image to load it in the input image panel
 
-2. Select one option from 'Full Image Histogram' and 'Divided Histogram'
+3. Select one option from 'Full Image Histogram' and 'Divided Histogram'
 
-3. Select run option to perform the operations
+4. Select run option to perform the operations
 
-a) Output result will be displayed in the output panel
+5. Output result will be displayed in the output panel
 
 **(B) Processing:**
 
 1. Select image from the mosaic using 'select image' option
 
-a. Select region of the image to load it in the input image panel
+2. Select region of the image to load it in the input image panel
 
-2. Select one option from Global histogram equalization, Local histogram equalization and Filtering on histogram
+3. Select one option from Global histogram equalization, Local histogram equalization and Filtering on histogram
 
 **Interesting Observations**
 
