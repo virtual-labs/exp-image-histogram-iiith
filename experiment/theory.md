@@ -2,7 +2,7 @@ Given an image A, its histogram H(k) is derived by counting the number of pixels
 
 H(k) = N<sub>k</sub> k = 0,1,2.....K-1.
 
-where Nk is the count of pixels at gray level k. The total number of bins in this histogram is K . Theoretically, the maximum value for K is determined by the pixel depth M of the image. For instance, for an M=8-bit greyscale image, we can have up to 2<sup>M</sup> = 256 = K bins and for a binary image (1-bit) we can have just 2 bins.
+where N<sub>k</sub> is the count of pixels at gray level k. The total number of bins in this histogram is K . Theoretically, the maximum value for K is determined by the pixel depth M of the image. For instance, for an M=8-bit greyscale image, we can have up to 2<sup>M</sup> = 256 = K bins and for a binary image (1-bit) we can have just 2 bins.
 
 Sometimes, the value of K is chosen to be different from 2<sup>M</sup>. This will alter the appearance of the histogram. The example below illustrates this effect.
 
