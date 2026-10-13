@@ -1,0 +1,158 @@
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "1. What does an image histogram represent?",
+      "answers": {
+        "a": "The distribution of pixel intensities in an image",
+        "b": "The spatial coordinates of every pixel",
+        "c": "The physical size of the image",
+        "d": "The order in which pixels are stored"
+      },
+      "correctAnswer": "a",
+      "explanations": {
+        "a": "Correct. An image histogram represents how the pixels of an image are distributed across different gray levels.",
+        "b": "Incorrect. Pixel coordinates describe where pixels are located, whereas a histogram describes their distribution across gray levels.",
+        "c": "Incorrect. Image dimensions describe the number of rows and columns and are not what a histogram represents.",
+        "d": "Incorrect. A histogram does not describe the storage order of pixels."
+      },
+      "difficulty": "beginner"
+    },
+    {
+      "question": "2. In a grayscale image histogram, the horizontal axis normally represents",
+      "answers": {
+        "a": "The number of pixels",
+        "b": "Gray level or intensity value",
+        "c": "Image width",
+        "d": "Image height"
+      },
+      "correctAnswer": "b",
+      "explanations": {
+        "a": "Incorrect. The number of pixels is represented by the histogram frequency rather than by the horizontal axis.",
+        "b": "Correct. The horizontal axis of a grayscale histogram represents the possible gray levels or intensity values.",
+        "c": "Incorrect. Image width is a spatial dimension and is not the quantity represented on the histogram's horizontal axis.",
+        "d": "Incorrect. Image height is a spatial dimension and is not the quantity represented on the histogram's horizontal axis."
+      },
+      "difficulty": "beginner"
+    },
+    {
+      "question": "3. If an image is rotated by $180^\\circ$, what happens to its gray-level histogram, assuming the image contents are unchanged?",
+      "answers": {
+        "a": "The histogram is rotated by $180^\\circ$",
+        "b": "The histogram is shifted toward higher gray levels",
+        "c": "The histogram remains the same",
+        "d": "The histogram is shifted toward lower gray levels"
+      },
+      "correctAnswer": "c",
+      "explanations": {
+        "a": "Incorrect. Rotation changes the spatial positions of pixels but does not rotate the gray-level values represented by the histogram.",
+        "b": "Incorrect. Spatial rotation does not systematically increase the gray levels of the pixels.",
+        "c": "Correct. Rotating an image changes pixel locations but preserves the set of gray-level values and their frequencies, so the histogram remains the same.",
+        "d": "Incorrect. Spatial rotation does not systematically decrease the gray levels of the pixels."
+      },
+      "difficulty": "beginner"
+    },
+    {
+      "question": "4. If a constant value $c$ is added to every pixel value $r$ in an image, so that the new value is $s = r + c$ for $c > 0$, how does the histogram generally change?",
+      "answers": {
+        "a": "It shifts toward higher gray levels",
+        "b": "It shifts toward lower gray levels",
+        "c": "It remains unchanged",
+        "d": "It is rotated by $180^\\circ$"
+      },
+      "correctAnswer": "a",
+      "explanations": {
+        "a": "Correct. Adding a positive constant increases each pixel value, so the distribution moves toward higher gray levels.",
+        "b": "Incorrect. A positive addition does not decrease the pixel values.",
+        "c": "Incorrect. Changing every pixel value changes the gray levels represented by the histogram.",
+        "d": "Incorrect. Adding a constant is an intensity transformation and is unrelated to rotating the image."
+      },
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "5. A grayscale image has a histogram that is spread approximately uniformly across its available gray levels. What can be concluded from the histogram alone?",
+      "answers": {
+        "a": "The image must have poor visual quality",
+        "b": "The image must have low contrast",
+        "c": "The image must contain only dark pixels",
+        "d": "The image uses a broad range of gray levels"
+      },
+      "correctAnswer": "d",
+      "explanations": {
+        "a": "Incorrect. Visual quality cannot be determined from uniform histogram distribution alone.",
+        "b": "Incorrect. A histogram spread across a broad range does not by itself indicate low contrast.",
+        "c": "Incorrect. A uniform distribution across available gray levels is not limited to dark pixel values.",
+        "d": "Correct. A histogram distributed across the available gray levels indicates that the image uses a broad range of intensities."
+      },
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "6. An 8-bit grayscale image has pixel values from $0$ to $255$. If every pixel value is increased by $20$, what happens to a pixel with original value $100$, before considering the upper limit?",
+      "answers": {
+        "a": "$80$",
+        "b": "$100$",
+        "c": "$120$",
+        "d": "$275$"
+      },
+      "correctAnswer": "c",
+      "explanations": {
+        "a": "Incorrect. This value would result from decreasing the original pixel value rather than applying the stated increase.",
+        "b": "Incorrect. This is the original pixel value and does not include the specified intensity change.",
+        "c": "Correct. The transformed value is $100 + 20 = 120$.",
+        "d": "Incorrect. This value does not result from applying the stated constant increase to a pixel whose original value is $100$."
+      },
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "7. A negative image is formed by replacing each pixel value $r$ with $s = L - 1 - r$, where $L$ is the number of possible gray levels. What happens to the histogram?",
+      "answers": {
+        "a": "Its gray-level ordering is reversed",
+        "b": "It remains at exactly the same gray-level positions",
+        "c": "It is shifted only toward higher gray levels",
+        "d": "It is shifted only toward lower gray levels"
+      },
+      "correctAnswer": "a",
+      "explanations": {
+        "a": "Correct. The transformation maps low gray levels to high gray levels and high gray levels to low gray levels, reversing the histogram's gray-level ordering.",
+        "b": "Incorrect. The transformation changes the gray level associated with each pixel.",
+        "c": "Incorrect. The transformation does not move all gray levels in only one direction.",
+        "d": "Incorrect. The transformation does not move all gray levels in only one direction."
+      },
+      "difficulty": "advanced"
+    },
+    {
+      "question": "8. For a grayscale image with bit depth $b$, what is the maximum number of distinct gray-level values that can be represented?",
+      "answers": {
+        "a": "$2b$",
+        "b": "$b^2$",
+        "c": "$2^b$",
+        "d": "$2^{b-1}$"
+      },
+      "correctAnswer": "c",
+      "explanations": {
+        "a": "Incorrect. The number of possible gray levels grows exponentially with bit depth rather than linearly with $b$.",
+        "b": "Incorrect. Squaring the bit depth does not give the number of possible intensity levels.",
+        "c": "Correct. A $b$-bit representation provides $2^b$ possible gray-level values.",
+        "d": "Incorrect. This represents only half of the number of possible values for a $b$-bit representation."
+      },
+      "difficulty": "advanced"
+    },
+    {
+      "question": "9. Two images have identical histograms but different spatial arrangements of their pixels. Which statement is correct?",
+      "answers": {
+        "a": "The images must be identical pixel by pixel",
+        "b": "The images have the same gray-level distribution but can have different spatial content",
+        "c": "The images must have different numbers of pixels",
+        "d": "One image must be a rotated version of the other"
+      },
+      "correctAnswer": "b",
+      "explanations": {
+        "a": "Incorrect. A histogram records gray-level frequencies and does not specify the spatial location of those pixels.",
+        "b": "Correct. Identical histograms indicate the same gray-level distribution, while the spatial arrangement can still differ.",
+        "c": "Incorrect. The same histogram does not imply that the images have different numbers of pixels.",
+        "d": "Incorrect. Different spatial arrangements do not necessarily result from a rotation."
+      },
+      "difficulty": "advanced"
+    }
+  ]
+}

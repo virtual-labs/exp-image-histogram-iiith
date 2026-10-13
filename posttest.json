@@ -1,0 +1,158 @@
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "1. What is the main purpose of an image histogram?",
+      "answers": {
+        "a": "To show the spatial position of every pixel",
+        "b": "To describe the distribution of pixel intensities",
+        "c": "To determine the image file format",
+        "d": "To record the sequence in which pixels were captured"
+      },
+      "correctAnswer": "b",
+      "explanations": {
+        "a": "Incorrect. Spatial position is not the information summarized by a histogram.",
+        "b": "Correct. An image histogram summarizes how frequently different pixel intensity or gray-level values occur.",
+        "c": "Incorrect. File format is independent of the gray-level distribution represented by a histogram.",
+        "d": "Incorrect. A histogram summarizes intensity frequencies rather than the acquisition sequence of pixels."
+      },
+      "difficulty": "beginner"
+    },
+    {
+      "question": "2. Which image operation changes the spatial arrangement of pixels without changing their gray-level values?",
+      "answers": {
+        "a": "Adding a positive constant to every pixel",
+        "b": "Subtracting a constant from every pixel",
+        "c": "Rotating the image",
+        "d": "Applying a gray-level transformation"
+      },
+      "correctAnswer": "c",
+      "explanations": {
+        "a": "Incorrect. Adding a constant changes the gray-level values of the pixels.",
+        "b": "Incorrect. Subtracting a constant changes the gray-level values of the pixels.",
+        "c": "Correct. Rotation changes where pixels are located in the image while preserving their gray-level values.",
+        "d": "Incorrect. A gray-level transformation changes the intensity values rather than merely rearranging their spatial positions."
+      },
+      "difficulty": "beginner"
+    },
+    {
+      "question": "3. In an 8-bit grayscale histogram, which gray-level range is normally represented?",
+      "answers": {
+        "a": "$0$ to $255$",
+        "b": "$1$ to $256$",
+        "c": "$0$ to $256$",
+        "d": "$-255$ to $255$"
+      },
+      "correctAnswer": "a",
+      "explanations": {
+        "a": "Correct. An 8-bit grayscale image can represent $2^8 = 256$ values, corresponding to gray levels from $0$ through $255$.",
+        "b": "Incorrect. This range does not use the standard zero-based range for 8-bit grayscale values.",
+        "c": "Incorrect. The value $256$ is outside the standard 8-bit grayscale range.",
+        "d": "Incorrect. Negative values are not part of the standard 8-bit grayscale range."
+      },
+      "difficulty": "beginner"
+    },
+    {
+      "question": "4. An image is transformed by adding the same positive constant to every pixel. Which change in its histogram is expected?",
+      "answers": {
+        "a": "A shift toward lower gray levels",
+        "b": "No change in gray-level positions",
+        "c": "A shift toward higher gray levels",
+        "d": "A rotation of the histogram"
+      },
+      "correctAnswer": "c",
+      "explanations": {
+        "a": "Incorrect. A positive constant increases the pixel values rather than decreasing them.",
+        "b": "Incorrect. The pixel intensities have been changed, so their gray-level positions are affected.",
+        "c": "Correct. Increasing every pixel value by the same positive amount shifts the histogram toward higher gray levels, subject to the valid intensity range.",
+        "d": "Incorrect. Histogram rotation is not the effect of adding a constant to every pixel."
+      },
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "5. A negative transformation for an 8-bit image is given by $s = 255-r$. If a pixel has value $r=40$, what is its transformed value?",
+      "answers": {
+        "a": "$40$",
+        "b": "$215$",
+        "c": "$255$",
+        "d": "$295$"
+      },
+      "correctAnswer": "b",
+      "explanations": {
+        "a": "Incorrect. This leaves the original pixel value unchanged.",
+        "b": "Correct. Substituting $r=40$ gives $s = 255-40 = 215$.",
+        "c": "Incorrect. This value does not result from subtracting the input value from $255$.",
+        "d": "Incorrect. This value is outside the valid 8-bit grayscale range and does not result from the stated transformation."
+      },
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "6. An image has a histogram concentrated in a narrow range of gray levels. What does this observation directly indicate?",
+      "answers": {
+        "a": "The pixels occupy only a limited range of intensities",
+        "b": "The image must have exactly one object",
+        "c": "The image must have been rotated",
+        "d": "The image contains every possible gray level equally often"
+      },
+      "correctAnswer": "a",
+      "explanations": {
+        "a": "Correct. A histogram concentrated in a narrow range shows that most pixels have intensities within that limited range.",
+        "b": "Incorrect. A histogram alone does not determine the number of objects in an image.",
+        "c": "Incorrect. A concentrated histogram does not indicate whether the image has been spatially rotated.",
+        "d": "Incorrect. Equal use of all gray levels would produce a substantially different histogram distribution."
+      },
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "7. An image and its $180^\\circ$ rotated version are compared using their histograms. Why are the histograms the same?",
+      "answers": {
+        "a": "Rotation changes every gray level by the same amount",
+        "b": "Rotation changes the number of pixels in the image",
+        "c": "Rotation changes spatial locations but preserves the gray-level values and their frequencies",
+        "d": "Rotation converts the histogram into a negative image"
+      },
+      "correctAnswer": "c",
+      "explanations": {
+        "a": "Incorrect. Rotation is a spatial operation and does not add or subtract a constant from gray levels.",
+        "b": "Incorrect. Rotation does not inherently change the number of pixels in the image.",
+        "c": "Correct. Rotation rearranges pixel positions while preserving the gray-level value associated with each pixel, so the frequency of each gray level remains unchanged.",
+        "d": "Incorrect. The histogram is not converted into a negative image by spatial rotation."
+      },
+      "difficulty": "advanced"
+    },
+    {
+      "question": "8. A histogram has two different images represented by the same gray-level frequencies but with different spatial arrangements. What can the histogram alone distinguish?",
+      "answers": {
+        "a": "The exact location of each pixel",
+        "b": "The spatial arrangement of objects",
+        "c": "The gray-level distribution, but not the spatial arrangement",
+        "d": "The orientation of every object"
+      },
+      "correctAnswer": "c",
+      "explanations": {
+        "a": "Incorrect. A histogram does not retain the coordinates of individual pixels.",
+        "b": "Incorrect. Spatial arrangement is not directly encoded by gray-level frequencies.",
+        "c": "Correct. A histogram provides information about the distribution of gray levels but does not preserve their spatial arrangement.",
+        "d": "Incorrect. Object orientation is spatial information and cannot be determined from the gray-level frequencies alone."
+      },
+      "difficulty": "advanced"
+    },
+    {
+      "question": "9. For a $b$-bit grayscale image, which expression gives the number of possible gray levels?",
+      "answers": {
+        "a": "$b^2$",
+        "b": "$2b$",
+        "c": "$2^{b-1}$",
+        "d": "$2^b$"
+      },
+      "correctAnswer": "d",
+      "explanations": {
+        "a": "Incorrect. The number of possible gray levels is not obtained by squaring the bit depth.",
+        "b": "Incorrect. The number of gray levels does not increase linearly with the bit depth.",
+        "c": "Incorrect. This expression represents half the number of possible values for a $b$-bit representation.",
+        "d": "Correct. A $b$-bit grayscale representation provides $2^b$ possible gray levels."
+      },
+      "difficulty": "advanced"
+    }
+  ]
+}

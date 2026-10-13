@@ -1,0 +1,1254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Histogram Simulation</title>
+    <link rel="icon" href="data:," />
+    <style>
+      :root {
+        --bg: #f3f5f8;
+        --panel: #ffffff;
+        --border: #d4d9e0;
+        --accent: #1f6feb;
+        --muted: #5d6470;
+        --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        background: var(--bg);
+        color: #1f2937;
+      }
+
+      .app {
+        max-width: 1200px;
+        margin: 28px auto;
+        padding: 20px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 20px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 16px 20px;
+      }
+
+      .toolbar {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        appearance: none;
+        border: 1px solid var(--border);
+        background: #f8fafc;
+        color: #111827;
+        padding: 10px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      button.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: 1.3fr 0.8fr 0.8fr;
+        gap: 18px;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        border-radius: 12px;
+        padding: 14px;
+        min-height: 260px;
+      }
+
+      .panel h3 {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 8px;
+        margin: 0 0 12px;
+        font-size: 1.1rem;
+      }
+
+      .dims {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--muted);
+      }
+
+      .mosaic-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 300px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #293541;
+        overflow: hidden;
+        touch-action: none;
+      }
+
+      #Mosaic {
+        position: relative;
+      }
+
+      #Mosaic-img {
+        position: relative;
+        z-index: 1;
+        display: block;
+        max-width: 100%;
+        max-height: 420px;
+        border-radius: 8px;
+        user-select: none;
+        -webkit-user-drag: none;
+        touch-action: none;
+      }
+
+      .selection-overlay {
+        position: absolute;
+        border: 2px solid #3b82f6;
+        background: rgba(59, 130, 246, 0.18);
+        pointer-events: none;
+        display: none;
+        z-index: 20;
+      }
+
+      .image-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 240px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: linear-gradient(180deg, #f8fafc, #eef2f7);
+        overflow: hidden;
+      }
+
+      .image-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: inherit;
+      }
+
+      .controls {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 20px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 16px 18px;
+      }
+
+      .group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 0;
+      }
+
+      .group h3 {
+        margin: 0 0 6px;
+      }
+
+      .group label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+      }
+
+      .inline-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 18px;
+      }
+
+      fieldset {
+        margin: 0;
+        padding: 10px 12px 12px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+      }
+
+      legend {
+        padding: 0 6px;
+        font-weight: 600;
+      }
+
+      .slider-row {
+        display: grid;
+        grid-template-columns: 9.5rem 1fr 4.5rem;
+        align-items: center;
+        gap: 10px;
+        margin-top: 6px;
+        color: var(--muted);
+      }
+
+      .slider-row input[type="range"] {
+        width: 100%;
+      }
+
+      .slider-row input[type="number"] {
+        width: 100%;
+        padding: 4px 6px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font: inherit;
+      }
+
+      .hint {
+        margin: 6px 0 0;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      .equation {
+        margin: 4px 0 0;
+        padding: 8px 10px;
+        border-radius: 8px;
+        background: #f8fafc;
+        border: 1px solid var(--border);
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 0.9rem;
+        overflow-wrap: anywhere;
+      }
+
+      .option-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .sub-options {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px 16px;
+        margin: 8px 0 0 26px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .select-row select {
+        padding: 4px 8px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font: inherit;
+      }
+
+      .hist-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+      }
+
+      .hist-grid figure {
+        margin: 0;
+        min-width: 0;
+      }
+
+      .hist-grid canvas {
+        display: block;
+        width: 100%;
+        height: 150px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+      }
+
+      .hist-grid figcaption {
+        margin-top: 4px;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, auto);
+        gap: 2px 10px;
+        margin: 4px 0 0;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      .stats dt {
+        font-weight: 600;
+      }
+
+      .stats dd {
+        margin: 0;
+      }
+
+      .steps-grid figure.wide {
+        width: 220px;
+      }
+
+      .steps-grid figure.wide img {
+        width: 220px;
+        height: 150px;
+        background: #fff;
+      }
+
+      .steps {
+        margin-top: 18px;
+      }
+
+      .steps-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .steps-grid figure {
+        margin: 0;
+        width: 150px;
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      .steps-grid img {
+        display: block;
+        width: 150px;
+        height: 150px;
+        object-fit: contain;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #eef2f7;
+      }
+
+      .status {
+        margin-top: 16px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+      }
+
+      @media (max-width: 900px) {
+        .app {
+          margin: 0 auto;
+          padding: 16px;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .workspace,
+        .controls {
+          grid-template-columns: 1fr;
+        }
+
+        .slider-row {
+          grid-template-columns: 1fr 4.5rem;
+        }
+
+        .slider-row > span {
+          grid-column: 1 / -1;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app">
+      <div class="topbar">
+        <div class="toolbar">
+          <button id="button1" type="button">Select Image</button>
+          <button id="button4" type="button">Reset</button>
+          <button id="button2" type="button" class="primary">Run</button>
+        </div>
+        <div id="status" class="status">OpenCV is being initialized…</div>
+      </div>
+
+      <div class="workspace">
+        <div id="Mosaic" class="panel">
+          <h3>Mosaic</h3>
+          <div class="mosaic-wrap">
+            <img
+              id="Mosaic-img"
+              src="images/Mosaic.png"
+              alt="Mosaic"
+              draggable="false"
+            />
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Input Image <span id="inputDims" class="dims">— × —</span></h3>
+          <div class="image-box">
+            <img id="layer4Image" src="images/Layer-4.jpg" alt="Selected input" />
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>
+            <span id="outputTitle">Output Image</span>
+            <span id="outputDims" class="dims">— × —</span>
+          </h3>
+          <div class="image-box">
+            <img id="layer5outputImage" src="images/Layer-5.jpg" alt="Output" />
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="group">
+          <h3>Operation</h3>
+          <div class="inline-options">
+            <label
+              ><input type="radio" name="mode" value="histogram" checked />
+              Histogram</label
+            >
+            <label
+              ><input type="radio" name="mode" value="processing" />
+              Processing</label
+            >
+          </div>
+
+          <fieldset data-mode="histogram">
+            <legend>Histogram type</legend>
+            <div class="option-list">
+              <label
+                ><input type="radio" name="histType" value="full" checked />
+                Full image histogram</label
+              >
+              <label
+                ><input type="radio" name="histType" value="divided" />
+                Divided histogram (four quadrants)</label
+              >
+            </div>
+          </fieldset>
+
+          <fieldset data-mode="processing" hidden>
+            <legend>Processing</legend>
+            <div class="option-list">
+              <label
+                ><input type="radio" name="method" value="global" checked />
+                Global histogram equalization</label
+              >
+              <label
+                ><input type="radio" name="method" value="local" /> Local
+                (adaptive) histogram equalization</label
+              >
+            </div>
+            <div id="windowRow" class="sub-options" hidden>
+              <span>Window size:</span>
+              <label
+                ><input type="radio" name="window" value="50" checked /> 50 ×
+                50</label
+              >
+              <label
+                ><input type="radio" name="window" value="100" /> 100 ×
+                100</label
+              >
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Histogram bins</legend>
+            <label class="select-row"
+              >Number of bins
+              <select id="bins">
+                <option value="256" selected>256</option>
+                <option value="128">128</option>
+                <option value="64">64</option>
+                <option value="32">32</option>
+                <option value="16">16</option>
+                <option value="8">8</option>
+              </select>
+            </label>
+            <p class="hint">
+              Each bin groups 256 / bins neighbouring gray levels.
+            </p>
+          </fieldset>
+        </div>
+
+        <div class="group">
+          <h3>Histogram Details</h3>
+          <div class="hist-grid">
+            <figure id="inputHistFigure">
+              <canvas id="inputHist" role="img" aria-label="Input histogram"></canvas>
+              <figcaption>Input histogram</figcaption>
+              <dl id="inputStats" class="stats"></dl>
+            </figure>
+            <figure id="outputHistFigure" hidden>
+              <canvas id="outputHist" role="img" aria-label="Output histogram"></canvas>
+              <figcaption>Output histogram</figcaption>
+              <dl id="outputStats" class="stats"></dl>
+            </figure>
+          </div>
+          <p id="histHint" class="hint"></p>
+        </div>
+      </div>
+
+      <div class="panel steps">
+        <h3>Intermediate Results</h3>
+        <div id="stepsGrid" class="steps-grid">
+          <p class="hint">Run an operation to see the results here.</p>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="js/opencv.js"></script>
+    <script type="text/javascript">
+      const app = {
+        mosaicMat: null,
+        inputGray: null,
+        processedImage: null,
+        selection: null,
+        dragging: false,
+        startPoint: null,
+        currentPoint: null,
+      };
+
+      const mosaic = document.getElementById("Mosaic");
+      const mosaicWrap = document.querySelector(".mosaic-wrap");
+      const mosaicImg = document.getElementById("Mosaic-img");
+      const inputImg = document.getElementById("layer4Image");
+      const outputImg = document.getElementById("layer5outputImage");
+      const statusEl = document.getElementById("status");
+      const selectionOverlay = document.createElement("div");
+      selectionOverlay.className = "selection-overlay";
+      mosaicWrap.appendChild(selectionOverlay);
+
+      function safeDelete(mat) {
+        if (mat && typeof mat.delete === "function" && !mat.isDeleted()) {
+          mat.delete();
+        }
+      }
+
+      function setStatus(message, isError) {
+        statusEl.textContent = message;
+        statusEl.style.background = isError ? "#fef2f2" : "#eff6ff";
+        statusEl.style.color = isError ? "#b91c1c" : "#1d4ed8";
+      }
+
+      function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+      }
+
+      /* ---------- Mosaic selection (native pointer / touch events) ---------- */
+
+      function placeSelectionOverlay(displayX, displayY, displayW, displayH) {
+        const wrapRect = mosaicWrap.getBoundingClientRect();
+        const imageRect = mosaicImg.getBoundingClientRect();
+        const offsetX = imageRect.left - wrapRect.left;
+        const offsetY = imageRect.top - wrapRect.top;
+
+        selectionOverlay.style.left = offsetX + displayX + "px";
+        selectionOverlay.style.top = offsetY + displayY + "px";
+        selectionOverlay.style.width = displayW + "px";
+        selectionOverlay.style.height = displayH + "px";
+      }
+
+      function getSelectionPoint(event) {
+        const source = event.touches?.[0] || event.changedTouches?.[0] || event;
+        return {
+          clientX: source.clientX,
+          clientY: source.clientY,
+        };
+      }
+
+      function beginSelection(event) {
+        if (app.dragging) return;
+        if (
+          event.type === "mousedown" &&
+          event.button !== 0 &&
+          event.which !== 1
+        ) {
+          return;
+        }
+        event.preventDefault();
+
+        const point = getSelectionPoint(event);
+        const rect = mosaicImg.getBoundingClientRect();
+        const localX = clamp(point.clientX - rect.left, 0, rect.width);
+        const localY = clamp(point.clientY - rect.top, 0, rect.height);
+
+        app.dragging = true;
+        app.startPoint = {
+          x: localX * (mosaicImg.naturalWidth / rect.width),
+          y: localY * (mosaicImg.naturalHeight / rect.height),
+        };
+        app.currentPoint = { ...app.startPoint };
+
+        placeSelectionOverlay(localX, localY, 0, 0);
+        selectionOverlay.style.display = "block";
+
+        setStatus("Drag across the mosaic to create a crop region.");
+      }
+
+      function moveSelection(event) {
+        if (!app.dragging || !app.startPoint) return;
+
+        event.preventDefault();
+        const point = getSelectionPoint(event);
+
+        const rect = mosaicImg.getBoundingClientRect();
+        const scaleX = mosaicImg.naturalWidth / rect.width;
+        const scaleY = mosaicImg.naturalHeight / rect.height;
+        const localX = clamp(point.clientX - rect.left, 0, rect.width);
+        const localY = clamp(point.clientY - rect.top, 0, rect.height);
+
+        const x = localX * scaleX;
+        const y = localY * scaleY;
+        app.currentPoint = { x, y };
+
+        const x1 = Math.min(app.startPoint.x, x);
+        const y1 = Math.min(app.startPoint.y, y);
+        const x2 = Math.max(app.startPoint.x, x);
+        const y2 = Math.max(app.startPoint.y, y);
+
+        placeSelectionOverlay(
+          x1 / scaleX,
+          y1 / scaleY,
+          (x2 - x1) / scaleX,
+          (y2 - y1) / scaleY,
+        );
+      }
+
+      function finalizeSelection(event) {
+        if (!app.dragging) return;
+
+        if (event) {
+          event.preventDefault();
+          moveSelection(event);
+        }
+
+        const x1 = Math.min(app.startPoint.x, app.currentPoint.x);
+        const y1 = Math.min(app.startPoint.y, app.currentPoint.y);
+        const x2 = Math.max(app.startPoint.x, app.currentPoint.x);
+        const y2 = Math.max(app.startPoint.y, app.currentPoint.y);
+
+        app.dragging = false;
+        selectionOverlay.style.display = "none";
+
+        if (x2 - x1 < 5 || y2 - y1 < 5) {
+          setStatus(
+            "Selection is too small. Drag a larger region on the mosaic.",
+            true,
+          );
+          return;
+        }
+
+        const left = clamp(Math.round(x1), 0, mosaicImg.naturalWidth - 1);
+        const top = clamp(Math.round(y1), 0, mosaicImg.naturalHeight - 1);
+        app.selection = {
+          x1: left,
+          y1: top,
+          width: clamp(Math.round(x2 - x1), 1, mosaicImg.naturalWidth - left),
+          height: clamp(Math.round(y2 - y1), 1, mosaicImg.naturalHeight - top),
+        };
+
+        cropFromSelection(app.selection);
+      }
+
+      function setupMosaicSelection() {
+        mosaicImg.addEventListener("pointerdown", (event) => {
+          beginSelection(event);
+          if (app.dragging && mosaicImg.setPointerCapture) {
+            mosaicImg.setPointerCapture(event.pointerId);
+          }
+        });
+        mosaicImg.addEventListener("pointermove", moveSelection);
+        mosaicImg.addEventListener("pointerup", finalizeSelection);
+        mosaicImg.addEventListener("pointercancel", finalizeSelection);
+        mosaicImg.addEventListener("mousedown", beginSelection);
+        mosaicImg.addEventListener("mousemove", moveSelection);
+        window.addEventListener("mouseup", finalizeSelection);
+        mosaicImg.addEventListener("touchstart", beginSelection, {
+          passive: false,
+        });
+        mosaicImg.addEventListener("touchmove", moveSelection, {
+          passive: false,
+        });
+        mosaicImg.addEventListener("touchend", finalizeSelection, {
+          passive: false,
+        });
+        mosaicImg.addEventListener("touchcancel", finalizeSelection, {
+          passive: false,
+        });
+      }
+
+      /* ---------- Image I/O ---------- */
+
+      function loadImage(url) {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.crossOrigin = "Anonymous";
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            const imageData = ctx.getImageData(0, 0, img.width, img.height);
+            const mat = new cv.Mat(
+              imageData.height,
+              imageData.width,
+              cv.CV_8UC4,
+            );
+            mat.data.set(imageData.data);
+            resolve(mat);
+          };
+          img.onerror = (err) => reject(err);
+          img.src = url;
+        });
+      }
+
+      function matToDataUrl(mat) {
+        const canvas = document.createElement("canvas");
+        cv.imshow(canvas, mat);
+        return canvas.toDataURL();
+      }
+
+      function setDims(id, width, height) {
+        document.getElementById(id).textContent =
+          width && height ? width + " × " + height : "— × —";
+      }
+
+      function cropFromSelection(selection) {
+        if (!app.mosaicMat) {
+          setStatus("The mosaic image has not loaded yet.", true);
+          return;
+        }
+
+        const rect = new cv.Rect(
+          selection.x1,
+          selection.y1,
+          selection.width,
+          selection.height,
+        );
+        const roi = app.mosaicMat.roi(rect);
+        const gray = new cv.Mat();
+        cv.cvtColor(roi, gray, cv.COLOR_RGBA2GRAY);
+        roi.delete();
+
+        safeDelete(app.inputGray);
+        app.inputGray = gray;
+        inputImg.src = matToDataUrl(gray);
+        setDims("inputDims", gray.cols, gray.rows);
+
+        safeDelete(app.processedImage);
+        app.processedImage = null;
+        outputImg.src = "images/Layer-5.jpg";
+        setDims("outputDims");
+        clearSteps();
+        resetOutputTitle();
+        refreshHistogramPanel();
+
+        setStatus(
+          "Input region selected (" +
+            gray.cols +
+            " × " +
+            gray.rows +
+            "). Choose an operation and click Run.",
+        );
+      }
+
+      /* ---------- Controls ---------- */
+
+      function getCheckedValue(name) {
+        return document.querySelector('input[name="' + name + '"]:checked')
+          ?.value;
+      }
+
+      function setChecked(name, value) {
+        document.querySelector(
+          'input[name="' + name + '"][value="' + value + '"]',
+        ).checked = true;
+      }
+
+      function readParams() {
+        return {
+          mode: getCheckedValue("mode") || "histogram",
+          histType: getCheckedValue("histType") || "full",
+          method: getCheckedValue("method") || "global",
+          window: Number(getCheckedValue("window") || 50),
+          bins: Number(document.getElementById("bins").value),
+        };
+      }
+
+      function updateControlState() {
+        const params = readParams();
+        document.querySelectorAll("fieldset[data-mode]").forEach((group) => {
+          group.hidden = group.dataset.mode !== params.mode;
+        });
+        document.getElementById("windowRow").hidden =
+          params.method !== "local";
+        document.getElementById("histHint").textContent =
+          params.mode === "processing"
+            ? "Bars: pixel count per bin. Orange line: cumulative distribution C(k)."
+            : "Bars: pixel count per bin. x-axis: gray level 0–255.";
+        refreshHistogramPanel();
+      }
+
+      function resetControls() {
+        setChecked("mode", "histogram");
+        setChecked("histType", "full");
+        setChecked("method", "global");
+        setChecked("window", "50");
+        document.getElementById("bins").value = "256";
+        updateControlState();
+      }
+
+      /* ---------- Histogram maths ---------- */
+
+      // Pixel count per bin; each bin covers 256 / bins gray levels.
+      function computeHistogram(gray, bins) {
+        const counts = new Array(bins).fill(0);
+        const data = gray.data;
+        for (let i = 0; i < data.length; i++) {
+          counts[Math.floor((data[i] * bins) / 256)] += 1;
+        }
+        return counts;
+      }
+
+      function computeStats(gray) {
+        const data = gray.data;
+        let min = 255;
+        let max = 0;
+        let sum = 0;
+        for (let i = 0; i < data.length; i++) {
+          if (data[i] < min) min = data[i];
+          if (data[i] > max) max = data[i];
+          sum += data[i];
+        }
+        const mean = sum / data.length;
+        let variance = 0;
+        for (let i = 0; i < data.length; i++) {
+          variance += (data[i] - mean) ** 2;
+        }
+        return {
+          pixels: data.length,
+          min,
+          max,
+          mean,
+          std: Math.sqrt(variance / data.length),
+        };
+      }
+
+      // Global equalization as in the theory: s(k) = (K − 1) C(k), K = 256.
+      function equalizeGlobal(gray) {
+        const counts = computeHistogram(gray, 256);
+        const lut = new Uint8Array(256);
+        let cumulative = 0;
+        for (let k = 0; k < 256; k++) {
+          cumulative += counts[k];
+          lut[k] = Math.round((255 * cumulative) / gray.data.length);
+        }
+        const dst = new cv.Mat(gray.rows, gray.cols, cv.CV_8UC1);
+        for (let i = 0; i < gray.data.length; i++) {
+          dst.data[i] = lut[gray.data[i]];
+        }
+        return dst;
+      }
+
+      // Local (adaptive) equalization: OpenCV CLAHE on tiles of about
+      // window × window px. The clip limit of 2 keeps flat regions such as a
+      // dark background from being stretched into noise.
+      const CLIP_LIMIT = 2;
+      function equalizeLocal(gray, windowSize) {
+        const tiles = new cv.Size(
+          Math.ceil(gray.cols / windowSize),
+          Math.ceil(gray.rows / windowSize),
+        );
+        const clahe = new cv.CLAHE(CLIP_LIMIT, tiles);
+        const dst = new cv.Mat();
+        clahe.apply(gray, dst);
+        clahe.delete();
+        return dst;
+      }
+
+      // Four quadrants split at the image centre (top-left, top-right,
+      // bottom-left, bottom-right).
+      function splitQuadrants(gray) {
+        const cx = Math.floor(gray.cols / 2);
+        const cy = Math.floor(gray.rows / 2);
+        return [
+          { label: "Top-left", rect: new cv.Rect(0, 0, cx, cy) },
+          { label: "Top-right", rect: new cv.Rect(cx, 0, gray.cols - cx, cy) },
+          { label: "Bottom-left", rect: new cv.Rect(0, cy, cx, gray.rows - cy) },
+          {
+            label: "Bottom-right",
+            rect: new cv.Rect(cx, cy, gray.cols - cx, gray.rows - cy),
+          },
+        ].map((q) => ({ label: q.label, mat: gray.roi(q.rect).clone() }));
+      }
+
+      /* ---------- Drawing ---------- */
+
+      function drawHistogram(canvas, counts, options = {}) {
+        const width = options.width || canvas.clientWidth || 280;
+        const height = options.height || canvas.clientHeight || 180;
+        const ratio = options.ratio || window.devicePixelRatio || 1;
+        canvas.width = width * ratio;
+        canvas.height = height * ratio;
+
+        const ctx = canvas.getContext("2d");
+        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, width, height);
+
+        const left = 8;
+        const right = 8;
+        const top = 8;
+        const bottom = 22;
+        const plotW = width - left - right;
+        const plotH = height - top - bottom;
+
+        ctx.strokeStyle = "#e2e8f0";
+        ctx.fillStyle = "#5d6470";
+        ctx.font = "11px Segoe UI, sans-serif";
+        ctx.textAlign = "center";
+        [0, 64, 128, 192, 255].forEach((v) => {
+          const x = left + (v / 255) * plotW;
+          ctx.beginPath();
+          ctx.moveTo(x, top);
+          ctx.lineTo(x, top + plotH);
+          ctx.stroke();
+          ctx.fillText(String(v), Math.min(Math.max(x, 10), width - 12), height - 6);
+        });
+
+        if (!counts) return;
+
+        const peak = Math.max(...counts) || 1;
+        const barW = plotW / counts.length;
+        ctx.fillStyle = options.color || "#1f6feb";
+        counts.forEach((count, i) => {
+          const h = (count / peak) * plotH;
+          ctx.fillRect(
+            left + i * barW,
+            top + plotH - h,
+            Math.max(barW - (counts.length <= 64 ? 1 : 0), 0.6),
+            h,
+          );
+        });
+
+        if (options.cdf) {
+          const total = counts.reduce((s, v) => s + v, 0) || 1;
+          let cumulative = 0;
+          ctx.strokeStyle = "#ea580c";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          counts.forEach((count, i) => {
+            cumulative += count;
+            const x = left + (i + 1) * barW;
+            const y = top + plotH - (cumulative / total) * plotH;
+            if (i === 0) ctx.moveTo(left, top + plotH);
+            ctx.lineTo(x, y);
+          });
+          ctx.stroke();
+          ctx.lineWidth = 1;
+        }
+
+        ctx.strokeStyle = "#94a3b8";
+        ctx.strokeRect(left, top, plotW, plotH);
+      }
+
+      function histogramDataUrl(counts, cdf) {
+        const canvas = document.createElement("canvas");
+        drawHistogram(canvas, counts, { width: 512, height: 300, ratio: 1, cdf });
+        return canvas.toDataURL();
+      }
+
+      function renderStats(id, stats) {
+        const el = document.getElementById(id);
+        if (!stats) {
+          el.innerHTML = "";
+          return;
+        }
+        const rows = [
+          ["Min", stats.min],
+          ["Max", stats.max],
+          ["Mean", stats.mean.toFixed(1)],
+          ["Std dev", stats.std.toFixed(1)],
+        ];
+        el.innerHTML = rows
+          .map((r) => "<div><dt>" + r[0] + "</dt><dd>" + r[1] + "</dd></div>")
+          .join("");
+      }
+
+      // One histogram figure in the details panel: canvas + stats for a Mat.
+      function showHistogram(prefix, gray, cdf) {
+        const canvas = document.getElementById(prefix + "Hist");
+        if (!gray) {
+          drawHistogram(canvas, null);
+          renderStats(prefix + "Stats", null);
+          return;
+        }
+        drawHistogram(canvas, computeHistogram(gray, readParams().bins), { cdf });
+        renderStats(prefix + "Stats", computeStats(gray));
+      }
+
+      /* ---------- Run ---------- */
+
+      function clearSteps() {
+        document.getElementById("stepsGrid").innerHTML =
+          '<p class="hint">Run an operation to see the results here.</p>';
+      }
+
+      function addStepFigure(grid, src, caption, wide) {
+        const figure = document.createElement("figure");
+        if (wide) figure.className = "wide";
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = caption;
+        const figcaption = document.createElement("figcaption");
+        figcaption.textContent = caption;
+        figure.append(img, figcaption);
+        grid.appendChild(figure);
+      }
+
+      function statsCaption(stats) {
+        return (
+          "min " +
+          stats.min +
+          ", max " +
+          stats.max +
+          ", mean " +
+          stats.mean.toFixed(1)
+        );
+      }
+
+      // Runs the selected operation on app.inputGray and renders everything.
+      // Returns the params used; app.processedImage holds the output image
+      // (null for the histogram-only operations).
+      function runOperation() {
+        const params = readParams();
+        const grid = document.getElementById("stepsGrid");
+        grid.innerHTML = "";
+        safeDelete(app.processedImage);
+        app.processedImage = null;
+
+        if (params.mode === "histogram") {
+          const counts = computeHistogram(app.inputGray, params.bins);
+          outputImg.src = histogramDataUrl(counts, false);
+          document.getElementById("outputTitle").textContent = "Histogram";
+          document.getElementById("outputDims").textContent =
+            params.bins + " bins";
+
+          addStepFigure(grid, inputImg.src, "Input");
+          if (params.histType === "divided") {
+            splitQuadrants(app.inputGray).forEach((q) => {
+              addStepFigure(grid, matToDataUrl(q.mat), q.label);
+              addStepFigure(
+                grid,
+                histogramDataUrl(computeHistogram(q.mat, params.bins), false),
+                q.label + " histogram (" + statsCaption(computeStats(q.mat)) + ")",
+                true,
+              );
+              q.mat.delete();
+            });
+          } else {
+            addStepFigure(
+              grid,
+              outputImg.src,
+              "Histogram, " +
+                params.bins +
+                " bins (" +
+                statsCaption(computeStats(app.inputGray)) +
+                ")",
+              true,
+            );
+          }
+          refreshHistogramPanel();
+          return params;
+        }
+
+        const output =
+          params.method === "local"
+            ? equalizeLocal(app.inputGray, params.window)
+            : equalizeGlobal(app.inputGray);
+        app.processedImage = output;
+        outputImg.src = matToDataUrl(output);
+        document.getElementById("outputTitle").textContent = "Output Image";
+        setDims("outputDims", output.cols, output.rows);
+
+        addStepFigure(grid, inputImg.src, "Input");
+        addStepFigure(
+          grid,
+          histogramDataUrl(computeHistogram(app.inputGray, params.bins), true),
+          "Input histogram + CDF",
+          true,
+        );
+        addStepFigure(grid, outputImg.src, describeOperation(params));
+        addStepFigure(
+          grid,
+          histogramDataUrl(computeHistogram(output, params.bins), true),
+          "Output histogram + CDF",
+          true,
+        );
+        refreshHistogramPanel();
+        return params;
+      }
+
+      function describeOperation(params) {
+        if (params.mode === "histogram") {
+          return (
+            (params.histType === "divided"
+              ? "Divided histogram"
+              : "Full image histogram") +
+            ", " +
+            params.bins +
+            " bins"
+          );
+        }
+        return params.method === "local"
+          ? "Local histogram equalization, " +
+              params.window +
+              " × " +
+              params.window +
+              " window"
+          : "Global histogram equalization";
+      }
+
+      function resetOutputTitle() {
+        document.getElementById("outputTitle").textContent = "Output Image";
+      }
+
+      function refreshHistogramPanel() {
+        const cdf = readParams().mode === "processing";
+        showHistogram("input", app.inputGray, cdf);
+        document.getElementById("outputHistFigure").hidden = !app.processedImage;
+        if (app.processedImage) showHistogram("output", app.processedImage, cdf);
+      }
+
+      function resetSimulation() {
+        safeDelete(app.inputGray);
+        safeDelete(app.processedImage);
+        app.inputGray = null;
+        app.processedImage = null;
+        app.selection = null;
+        app.dragging = false;
+        selectionOverlay.style.display = "none";
+
+        inputImg.src = "images/Layer-4.jpg";
+        outputImg.src = "images/Layer-5.jpg";
+        resetOutputTitle();
+        setDims("inputDims");
+        setDims("outputDims");
+        clearSteps();
+        resetControls();
+
+        setStatus(
+          "Simulation reset. Select a mosaic region, choose an operation, and click Run.",
+        );
+      }
+
+      function setupControls() {
+        document
+          .querySelectorAll(
+            'input[name="mode"], input[name="histType"], input[name="method"], input[name="window"], #bins',
+          )
+          .forEach((input) =>
+            input.addEventListener("change", updateControlState),
+          );
+        window.addEventListener("resize", refreshHistogramPanel);
+        updateControlState();
+      }
+
+      function onOpenCvReady() {
+        setupMosaicSelection();
+
+        loadImage("images/Mosaic.png")
+          .then((mat) => {
+            app.mosaicMat = mat;
+            setStatus(
+              "OpenCV is ready. Drag or touch-drag on the mosaic to select an input region.",
+            );
+          })
+          .catch((err) => {
+            console.error(err);
+            setStatus("Could not load the mosaic image.", true);
+          });
+      }
+
+      document.getElementById("button1").addEventListener("click", () => {
+        mosaic.style.display = "block";
+        mosaic.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        setStatus(
+          "Drag or touch-drag a rectangle over the mosaic to select an input region.",
+        );
+      });
+
+      document.getElementById("button2").addEventListener("click", () => {
+        if (!app.inputGray) {
+          setStatus(
+            "Please select a valid region from the mosaic first.",
+            true,
+          );
+          return;
+        }
+        const params = runOperation();
+        setStatus(
+          "Processing complete (" + describeOperation(params) + ").",
+        );
+      });
+      document
+        .getElementById("button4")
+        .addEventListener("click", resetSimulation);
+
+      setupControls();
+
+      function waitForOpenCv(maxAttempts) {
+        let attempts = 0;
+        const timer = setInterval(() => {
+          attempts += 1;
+          if (window.cv && typeof window.cv.Mat !== "undefined") {
+            clearInterval(timer);
+            onOpenCvReady();
+            return;
+          }
+          if (attempts >= maxAttempts) {
+            clearInterval(timer);
+            setStatus("OpenCV did not initialize correctly.", true);
+          }
+        }, 250);
+      }
+
+      if (window.cv && typeof window.cv.Mat !== "undefined") {
+        onOpenCvReady();
+      } else {
+        waitForOpenCv(120);
+      }
+    </script>
+  </body>
+</html>

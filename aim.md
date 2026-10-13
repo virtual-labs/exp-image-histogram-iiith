@@ -1,0 +1,1 @@
+The aim of this experiment is to study the histogram of a digital image as a representation of its pixel-intensity distribution, and to understand how the histogram can be used to analyse and improve the visual quality of an image.
